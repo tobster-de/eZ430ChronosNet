@@ -198,9 +198,10 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool SendSyncCommand(byte[] data)
         {
+            //if (BM_errorstate != HW_NO_ERROR) return false;
             if (data.Length > Constants.BM_SYNC_DATA_LEN)
                 return false;
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), 0, 1);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), data.Length, 1);
             return CheckResponse(response);
         }
 
@@ -209,10 +210,10 @@ namespace eZ430ChronosNet
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        public bool GetSyncBufferStatus(out byte status)
+        public bool GetSyncBufferStatus(out SyncStatus status)
         {
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_START, null), 1, 1);
-            status = response.Data[Constants.PACKET_DATA_START];
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_GET_BUFFER_STATUS, null), 1, 1);
+            status = (SyncStatus)response.Data[Constants.PACKET_DATA_START];
             return CheckResponse(response);
         }
 

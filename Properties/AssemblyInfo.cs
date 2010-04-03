@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("eZ430_Chronos_Net")]
-[assembly: AssemblyDescription("ez430-Chronos Access Point Control Wrapper for .Net")]
+[assembly: AssemblyDescription("ez430-Chronos Access Point Communication Library for .Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("nospace")]
 [assembly: AssemblyProduct("eZ430ChronosNet")]

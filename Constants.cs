@@ -98,6 +98,16 @@ namespace eZ430ChronosNet
     }
 
     /// <summary>
+    /// Sync status (takes from BM_SYNC.cpp)
+    /// </summary>
+    public enum SyncStatus : byte
+    {
+        SYNC_USB_DATA_EMPTY = 0,
+        SYNC_USB_DATA_READY = 1,
+        SYNC_USB_DATA_LOCKED = 2
+    }
+
+    /// <summary>
     /// Constants taken from BM-API.h and BM_SYNC.cpp
     /// </summary>
     public class Constants
@@ -109,11 +119,6 @@ namespace eZ430ChronosNet
         internal const byte PACKET_TOTAL_BYTES = (PACKET_OVERHEAD_BYTES + PACKET_DATA_BYTES);
 
         /* BM_SYNC.cpp ******************************************************************/
-
-        // USB 
-        public const byte SYNC_USB_DATA_EMPTY = 0;
-        public const byte SYNC_USB_DATA_READY = 1;
-        public const byte SYNC_USB_DATA_LOCKED = 2;
 
         // USB transmission packet length
         public const byte SYNC_HEADER_LENGTH = 2;       // 2 + 26 = 28 total data length
