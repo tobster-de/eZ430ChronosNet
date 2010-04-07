@@ -63,21 +63,15 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public static Packet Create(APCommand cmd, byte[] data)
         {
-            byte[] tx_buf = new byte[Constants.PACKET_TOTAL_BYTES];
-
             byte len = (data == null) ? (byte)0 : (byte)data.Length;
+            byte[] tx_buf = new byte[len + Constants.PACKET_OVERHEAD_BYTES];
+
             tx_buf[0] = 0xFF;		                                            // Start marker
             tx_buf[1] = (byte)cmd;                                              // Command code
             tx_buf[2] = (byte)(len + Constants.PACKET_OVERHEAD_BYTES);          // Packet length
             if (data != null)
                 for (int i = 0; i < data.Length; i++)
                     tx_buf[Constants.PACKET_OVERHEAD_BYTES + i] = data[i];	    // Packet data (no reordering)
-
-            // Clear RX buffer
-            //for (int i = 0; i < PACKET_TOTAL_BYTES; i++)
-            //{
-            //    rx_buf[i] = 0;
-            //}
 
             return new Packet(tx_buf);
         }

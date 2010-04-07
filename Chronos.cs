@@ -79,7 +79,6 @@ namespace eZ430ChronosNet
             // can't realize why there is sent a zero byte and received one byte which isn't used,
             // but it's written this way in the c++ lib
 
-            // 0x00 = No data
             byte[] data = new byte[1] { 0x00 };
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_RESET, data), data.Length, 1);
             return CheckResponse(response);
@@ -92,7 +91,6 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool GetID(out UInt32 ID)
         {
-            // 0x00 = No data
             byte[] data = new byte[4] { 0x00, 0x00, 0x00, 0x00 };
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_RESET, data), data.Length, 1);
 
@@ -123,10 +121,15 @@ namespace eZ430ChronosNet
 
         private Packet SendAndReceive(Packet packet, int receive, int delay)
         {
-            _buffer.Clear();
+            if (_port.IsOpen) _port.DiscardOutBuffer();
             SendPacket(packet);
             Thread.Sleep(delay);
-            return GetResponse(receive + Constants.PACKET_OVERHEAD_BYTES);
+            Packet result = GetResponse(receive + Constants.PACKET_OVERHEAD_BYTES);
+
+            //if (_port.IsOpen) _port.DiscardInBuffer();
+            //_buffer.Clear();
+
+            return result;
         }
 
         private bool CheckResponse(Packet response)
@@ -166,7 +169,6 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool GetData(out UInt32 data)
         {
-            // 0x00 = No data
             byte[] send = new byte[4] { 0x00, 0x00, 0x00, 0x00 };
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_GET_SIMPLICITIDATA, send), send.Length, 1);
 
@@ -198,10 +200,9 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool SendSyncCommand(byte[] data)
         {
-            //if (BM_errorstate != HW_NO_ERROR) return false;
             if (data.Length > Constants.BM_SYNC_DATA_LEN)
                 return false;
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), data.Length, 1);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), data.Length, 0);
             return CheckResponse(response);
         }
 
@@ -212,7 +213,7 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool GetSyncBufferStatus(out SyncStatus status)
         {
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_GET_BUFFER_STATUS, null), 1, 1);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_GET_BUFFER_STATUS, null), 1, 0);
             status = (SyncStatus)response.Data[Constants.PACKET_DATA_START];
             return CheckResponse(response);
         }
@@ -224,9 +225,7 @@ namespace eZ430ChronosNet
         /// <returns></returns>
         public bool ReadSyncBuffer(out byte[] data)
         {
-            Packet response = SendAndReceive(
-                Packet.Create(APCommand.BM_SYNC_READ_BUFFER, new byte[1]),
-                Constants.BM_SYNC_DATA_LEN, 1);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_READ_BUFFER, null), Constants.BM_SYNC_DATA_LEN, 0);
 
             data = new byte[Constants.BM_SYNC_DATA_LEN];
             for (int i = 0; i < Constants.BM_SYNC_DATA_LEN; i++)
@@ -277,11 +276,14 @@ namespace eZ430ChronosNet
             }
             _buffer.Clear();
             _port = new SerialPort(portName, 115200, Parity.None, 8, StopBits.One);
-            _port.WriteTimeout = 3000;
-            _port.ReadTimeout = 3000;
+            _port.WriteTimeout = 30000;
+            _port.ReadTimeout = 30000;
             try
             {
-                _port.Handshake = Handshake.RequestToSend;
+                _port.Handshake = Handshake.RequestToSendXOnXOff;
+                _port.DtrEnable = true;
+                _port.RtsEnable = true;
+                _port.ReceivedBytesThreshold = 1;
                 _port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
                 _port.Open();
             }
