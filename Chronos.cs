@@ -202,7 +202,20 @@ namespace eZ430ChronosNet
         {
             if (data.Length > Constants.BM_SYNC_DATA_LEN)
                 return false;
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), data.Length, 0);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), data.Length, 1);
+            return CheckResponse(response);
+        }
+
+        /// <summary>
+        /// Send command packet to watch, wait a given time, and receive a packet with a given length
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool SendSyncCommand(byte[] data, int rcvlength, int delay)
+        {
+            if (data.Length > Constants.BM_SYNC_DATA_LEN)
+                return false;
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_SEND_COMMAND, data), rcvlength, delay);
             return CheckResponse(response);
         }
 
