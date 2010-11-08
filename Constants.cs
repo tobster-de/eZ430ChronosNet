@@ -144,6 +144,12 @@ namespace eZ430ChronosNet
         //public const byte SYNC_AP_CMD_ERASE_MEMORY = 0x06;
         //public const byte SYNC_AP_CMD_EXIT = 0x07;
 
+        //// Datalog mode (taken from TI Data logger firmware)
+        //public const byte DATALOG_MODE_HEARTRATE = 1;			
+        //public const byte DATALOG_MODE_TEMPERATURE = 2;		
+        //public const byte DATALOG_MODE_ALTITUDE	 = 4;		
+        //public const byte DATALOG_MODE_ACCELERATION	= 8;	
+
     }
 
 }
