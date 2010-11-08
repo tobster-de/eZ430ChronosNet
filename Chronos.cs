@@ -92,7 +92,7 @@ namespace eZ430ChronosNet
         public bool GetID(out UInt32 ID)
         {
             byte[] data = new byte[4] { 0x00, 0x00, 0x00, 0x00 };
-            Packet response = SendAndReceive(Packet.Create(APCommand.BM_RESET, data), data.Length, 1);
+            Packet response = SendAndReceive(Packet.Create(APCommand.BM_GET_PRODUCT_ID, data), data.Length, 1);
 
             ID = (uint)(response.Data[Constants.PACKET_DATA_START + 3] << 24) +
                 (uint)(response.Data[Constants.PACKET_DATA_START + 2] << 16) +
