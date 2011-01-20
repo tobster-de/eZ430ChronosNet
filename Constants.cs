@@ -135,20 +135,20 @@ namespace eZ430ChronosNet
 
 
 
-        //// SimpliciTI sync mode commands (taken from firmware) --> scope of conrete application 
-        //public const byte SYNC_AP_CMD_NOP = 0x01;
-        //public const byte SYNC_AP_CMD_GET_STATUS = 0x02;
-        //public const byte SYNC_AP_CMD_SET_WATCH = 0x03;
-        //public const byte SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_1 = 0x04;
-        //public const byte SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_2 = 0x05;
-        //public const byte SYNC_AP_CMD_ERASE_MEMORY = 0x06;
-        //public const byte SYNC_AP_CMD_EXIT = 0x07;
+        // SimpliciTI sync mode commands (taken from firmware) --> scope of conrete application 
+        public const byte SYNC_AP_CMD_NOP = 0x01;
+        public const byte SYNC_AP_CMD_GET_STATUS = 0x02;
+        public const byte SYNC_AP_CMD_SET_WATCH = 0x03;
+        public const byte SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_1 = 0x04;
+        public const byte SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_2 = 0x05;
+        public const byte SYNC_AP_CMD_ERASE_MEMORY = 0x06;
+        public const byte SYNC_AP_CMD_EXIT = 0x07;
 
-        //// Datalog mode (taken from TI Data logger firmware)
-        //public const byte DATALOG_MODE_HEARTRATE = 1;			
-        //public const byte DATALOG_MODE_TEMPERATURE = 2;		
-        //public const byte DATALOG_MODE_ALTITUDE	 = 4;		
-        //public const byte DATALOG_MODE_ACCELERATION	= 8;	
+        // Datalog mode (taken from TI Data logger firmware)
+        public const byte DATALOG_MODE_HEARTRATE = 1;			
+        public const byte DATALOG_MODE_TEMPERATURE = 2;		
+        public const byte DATALOG_MODE_ALTITUDE	 = 4;		
+        public const byte DATALOG_MODE_ACCELERATION	= 8;	
 
     }
 
