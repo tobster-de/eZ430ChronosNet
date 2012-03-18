@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eZ430_Chronos_Net", "eZ430_Chronos_Net.csproj", "{DC384C16-2DC1-4BE8-A3B8-5E55B4F14712}"
 EndProject
 Global
