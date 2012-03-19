@@ -54,6 +54,9 @@ namespace eZ430ChronosNet
 
         #region Properties
 
+        /// <summary>
+        /// Gets a value determining whether the serial port to the AP is open
+        /// </summary>
         public bool PortOpen
         {
             get
@@ -73,7 +76,7 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Reset RF access point
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool ResetAP()
         {
             // can't realize why there is sent a zero byte and received one byte which isn't used,
@@ -88,7 +91,7 @@ namespace eZ430ChronosNet
         ///  Get RF access point dummy ID - used by live check
         /// </summary>
         /// <param name="ID">ID of the connected access point</param>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool GetID(out UInt32 ID)
         {
             byte[] data = new byte[4] { 0x00, 0x00, 0x00, 0x00 };
@@ -110,7 +113,7 @@ namespace eZ430ChronosNet
         /// HW_IDLE, HW_SIMPLICITI_STOPPED, HW_SIMPLICITI_TRYING_TO_LINK, HW_SIMPLICITI_LINKED,
         /// HW_BLUEROBIN_STOPPED, HW_BLUEROBIN_TRANSMITTING, HW_ERROR, HW_NO_ERROR, HW_NOT_CONNECTED
         /// </param>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool GetAPStatus(out APStatus status)
         {
             byte[] data = new byte[1] { 0x00 };
@@ -146,7 +149,7 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Start SimpliciTI stack in acc/ppt mode
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool StartSimpliciTI()
         {
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_START_SIMPLICITI, null), 0, 1);
@@ -156,7 +159,7 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Stop SimpliciTI stack
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool StopSimpiliTI()
         {
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_STOP_SIMPLICITI, null), 0, 1);
@@ -166,7 +169,8 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Get SimpliciTI acc/ppt data (4 bytes)
         /// </summary>
-        /// <returns></returns>
+        /// <param name="data">the acc/ppt data</param>
+        /// <returns>true, if the command succeeded</returns>
         public bool GetData(out UInt32 data)
         {
             byte[] send = new byte[4] { 0x00, 0x00, 0x00, 0x00 };
@@ -186,7 +190,7 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Start RF access point sync mode
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true, if the command succeeded</returns>
         public bool StartSyncMode()
         {
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_START, null), 0, 1);
@@ -196,8 +200,8 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Send command packet to watch
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">payload data</param>
+        /// <returns>true, if the command succeeded</returns>
         public bool SendSyncCommand(byte[] data)
         {
             if (data.Length > Constants.BM_SYNC_DATA_LEN)
@@ -209,8 +213,10 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Send command packet to watch, wait a given time, and receive a packet with a given length
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">payload data</param>
+        /// <param name="delay">time to wait for response</param>
+        /// <param name="rcvlength">the amount of date to receive</param>
+        /// <returns>true, if the command succeeded</returns>
         public bool SendSyncCommand(byte[] data, int rcvlength, int delay)
         {
             if (data.Length > Constants.BM_SYNC_DATA_LEN)
@@ -222,8 +228,8 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Get sync buffer status from RF access point
         /// </summary>
-        /// <param name="status"></param>
-        /// <returns></returns>
+        /// <param name="status">return value containing the status of the buffer</param>
+        /// <returns>true, if the command succeeded</returns>
         public bool GetSyncBufferStatus(out SyncStatus status)
         {
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_GET_BUFFER_STATUS, null), 1, 0);
@@ -234,8 +240,8 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Read data bytes from sync buffer
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        /// <param name="data">the data that was read</param>
+        /// <returns>true, if the command succeeded</returns>
         public bool ReadSyncBuffer(out byte[] data)
         {
             Packet response = SendAndReceive(Packet.Create(APCommand.BM_SYNC_READ_BUFFER, null), Constants.BM_SYNC_DATA_LEN, 0);
@@ -260,7 +266,7 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Get COM port name from Windows system using friendly name
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the name of the serial port, the AP is connected to</returns>
         public string GetComPortName()
         {
             Hashtable table = PortName.BuildPortNameHash(SerialPort.GetPortNames());
@@ -279,8 +285,8 @@ namespace eZ430ChronosNet
         /// <summary>
         /// Open COM port
         /// </summary>
-        /// <param name="portName">"COMx" - May be automatically determined with <seealso cref="GetComPortName"/>GetComPortName</seealso> </param>
-        /// <returns></returns>
+        /// <param name="portName">"COMx" - May be automatically determined with <see cref="GetComPortName">GetComPortName</see> </param>
+        /// <returns>true, if the command succeeded</returns>
         public bool OpenComPort(String portName)
         {
             if (_port != null && _port.IsOpen)

@@ -98,7 +98,7 @@ namespace eZ430ChronosNet
     }
 
     /// <summary>
-    /// Sync status (takes from BM_SYNC.cpp)
+    /// Sync status (taken from BM_SYNC.cpp)
     /// </summary>
     public enum SyncStatus : byte
     {
@@ -145,11 +145,15 @@ namespace eZ430ChronosNet
         public const byte SYNC_AP_CMD_EXIT = 0x07;
 
         // Datalog mode (taken from TI Data logger firmware)
-        public const byte DATALOG_MODE_HEARTRATE = 1;			
-        public const byte DATALOG_MODE_TEMPERATURE = 2;		
-        public const byte DATALOG_MODE_ALTITUDE	 = 4;		
-        public const byte DATALOG_MODE_ACCELERATION	= 8;	
+        public const byte DATALOG_MODE_HEARTRATE = 1;
+        public const byte DATALOG_MODE_TEMPERATURE = 2;
+        public const byte DATALOG_MODE_ALTITUDE = 4;
+        public const byte DATALOG_MODE_ACCELERATION = 8;
 
+        /// <summary>
+        /// Do not create objects of this class
+        /// </summary>
+        private Constants() { }
     }
 
 }

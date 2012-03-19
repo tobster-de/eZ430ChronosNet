@@ -60,7 +60,7 @@ namespace eZ430ChronosNet
         /// </summary>
         /// <param name="cmd">packet command</param>
         /// <param name="data">data to transfer</param>
-        /// <returns></returns>
+        /// <returns>the created Packet object</returns>
         public static Packet Create(APCommand cmd, byte[] data)
         {
             byte len = (data == null) ? (byte)0 : (byte)data.Length;
@@ -76,6 +76,11 @@ namespace eZ430ChronosNet
             return new Packet(tx_buf);
         }
 
+        /// <summary>
+        /// Creates a new response packet using the provided data
+        /// </summary>
+        /// <param name="data">the data to create the packet with</param>
+        /// <returns>the created Packet object</returns>
         public static Packet CreateResponse(byte[] data)
         {
             return new Packet(data);
